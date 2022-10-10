@@ -1,4 +1,32 @@
 ---------------------------
+----bjj-atmheist--------
+---------------------------
+local function ATMHeist(veh)
+    local vehdata = vehicleData(veh)
+    local currentPos = GetEntityCoords(PlayerPedId())
+    local locationInfo = getStreetandZone(currentPos)
+    local heading = getCardinalDirectionFromHeading()
+    TriggerServerEvent("dispatch:server:notify", {
+        dispatchcodename = "atmheist", -- has to match the codes in sv_dispatchcodes.lua so that it generates the right blip
+        dispatchCode = "10-90",
+        firstStreet = locationInfo,
+        model = vehdata.name, -- vehicle name
+        plate = vehdata.plate, -- vehicle plate
+        priority = 1,
+        firstColor = vehdata.colour, -- vehicle color
+        heading = heading,
+        automaticGunfire = false,
+        origin = {
+            x = currentPos.x,
+            y = currentPos.y,
+            z = currentPos.z
+        },
+        dispatchMessage = 'ATM Tampering',
+        job = { "police" }
+    })
+end exports('ATMHeist', ATMHeist)
+
+---------------------------
 ----rainmad scripts--------
 ---------------------------
 
